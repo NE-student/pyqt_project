@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from PyQt5.QtCore import pyqtSignal
-from widgets.DataButton import DataButton
+from widgets.LeftSide.DataButton import DataButton
 
 
 class BranchButton(QWidget):
