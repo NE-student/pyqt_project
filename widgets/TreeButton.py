@@ -1,15 +1,32 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
-from widgets.DataButton import DataButton
+from widgets.BranchButton import BranchButton
 
 
-class Buttontree(QWidget):
-    def __init__(self):
-        super().__init__(self)
 
-        self.layout = QVBoxLayout()
-        self.Tree = {}
+class TreeButton(QWidget):
+    def __init__(self, branches):
+        super().__init__()
 
-    def addButton(self):
-        btn = DataButton("Name", "None")
-        self.layout.addWidget(btn)
-        self.Tree
+        self.layout = QVBoxLayout(self)
+        self.Tree = branches
+        self.CurrentBranches = self.Tree.copy()
+
+        self.viewBranches()
+
+    def viewBranches(self):
+        for branch in self.CurrentBranches:
+            branch.branchsignal.connect(self.moveIn)
+            self.layout.addWidget(branch)
+            #branch.show()
+
+
+    def moveIn(self,arg):
+        self.refreshLayout()
+        self.CurrentBranches = arg
+        self.viewBranches()
+
+    def refreshLayout(self):
+        for w in self.CurrentBranches:
+            self.layout.removeWidget(w)
+            w.hide()
+
