@@ -25,7 +25,9 @@ class App(QMainWindow):
         self.setGeometry(40,40, 300, 450)
 
     def viewDescription(self, arg):
+        self.layout.removeWidget(self.description)
         self.description = DescriptionWidget(arg)
+        self.layout.addWidget(self.description)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
