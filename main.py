@@ -31,8 +31,11 @@ class App(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-
-    games = [BranchButton("Grounded", "....", [BranchButton("Weapons", ".."), BranchButton("Npcs", "..")])]
-    window = App(games)
+    game = [BranchButton("Grounded", "Grounded")]
+    children = [BranchButton("Weapons", "Weapons"), BranchButton("Npcs", "Npcs")]
+    childrenchildren = [BranchButton("For far", "For far"), BranchButton("For near", "For near")]
+    game[0].addBranches(children)
+    children[0].addBranches(childrenchildren)
+    window = App(game)
     window.show()
     sys.exit(app.exec())
