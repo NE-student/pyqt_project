@@ -1,36 +1,34 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from PyQt5.QtCore import pyqtSignal
 from widgets.LeftSide.DataButton import DataButton
+from widgets.LeftSide.BranchesButton import BranchesButton
 
 
 class BranchButton(QWidget):
     buttonsignal = pyqtSignal(DataButton)
     branchsignal = pyqtSignal(dict)
 
-    def __init__(self, name="Name", data="None", branches=[], prevbranches=[]):
+    def __init__(self, name="Name", data="None", branches=BranchesButton(), prevbranch=None):
         super().__init__()
         self.layout = QVBoxLayout(self)
         self.Button = DataButton(name, data)
         self.layout.addWidget(self.Button)
         self.Branches = branches
-        self.prevBranches = prevbranches
+        self.prevBranch = prevbranch
         self.Button.clicked.connect(self.choiceBranch)
 
-    def addprevBranch(self, tmp):
-        self.prevBranches = [tmp]
+    def setprevBranch(self, prevBranch):
+        self.prevBranch = prevBranch
+
+    def setBranches(self, branches=BranchesButton()):
+        branches.setprevBranch(self)
+        self.Branches = branches
 
     def choiceBranch(self):
         self.buttonsignal.emit(self.Button)
-        self.branchsignal.emit({"Branches":self.Branches, "prevBranches":self.prevBranches})
+        self.branchsignal.emit({"Branches":self.Branches, "prevBranch":self.prevBranch})
 
-    def addBranch(self, name="Name", data="None", branches=[]):
-        branch = BranchButton(name, data, branches, list(self))
-        self.Branches.append(branch)
-
-    def addBranches(self, branches=[]):
-        for branch in branches:
-            branch.addprevBranch(self)
-        self.Branches = branches
-
-    def __copy__(self):
-        return BranchButton(self.Button.text(), self.Button.Data, self.Branches)
+    def isHighRank(self):
+        if self.prevBranch is None:
+            return True
+        return False

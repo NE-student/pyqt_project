@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QHBoxLayout
 from widgets.LeftSide.TreeButton import TreeButton
 from widgets.LeftSide.BranchButton import BranchButton
+from widgets.LeftSide.BranchesButton import BranchesButton
 from widgets.RightSide.DescriptionWidget import DescriptionWidget
 from widgets.Item import Item
 import sys
@@ -31,11 +32,11 @@ class App(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    game = [BranchButton("Grounded", "Grounded")]
-    children = [BranchButton("Weapons", "Weapons"), BranchButton("Npcs", "Npcs")]
-    childrenchildren = [BranchButton("For far", "For far"), BranchButton("For near", "For near")]
-    game[0].addBranches(children)
-    children[0].addBranches(childrenchildren)
+    game = BranchesButton([BranchButton("Grounded", "Grounded")])
+    children = BranchesButton([BranchButton("Weapons", "Weapons"), BranchButton("Npcs", "Npcs")])
+    childrenchildren = BranchesButton([BranchButton("For far", "For far"), BranchButton("For near", "For near")])
+    game.setBranchesAt(0, children)
+    children.setBranchesAt(0, childrenchildren)
     window = App(game)
     window.show()
     sys.exit(app.exec())

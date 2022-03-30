@@ -9,12 +9,12 @@ class TreeButton(QWidget):
     def __init__(self, branches):
         super().__init__()
 
-        self.depthLevel = 0
+        self.backMovable = False
 
         self.layout = QVBoxLayout(self)
         self.Tree = branches
-        self.backbuttons = []
-        self.CurrentBranches = self.Tree.copy()
+        self.CurrentBranches = self.Tree
+        self.prevBranch = None
 
         self.backbtn = QPushButton("<-")
         self.backbtn.setDisabled(True)
@@ -24,25 +24,18 @@ class TreeButton(QWidget):
         self.viewBranches()
 
     def viewBranchesAfterBack(self):
-        self.backbtn.setDisabled(True)
-        if self.depthLevel != 0:
-            self.backbtn.setDisabled(False)
+        self.backbtn.setDisabled(self.backMovable)
 
-        for branch in self.CurrentBranches:
-            self.layout.addWidget(branch)
-            branch.show()
+        self.CurrentBranches.addToLayout()
+        self.layout.addWidget(self.CurrentBranches)
 
     def viewBranches(self):
-        self.backbtn.setDisabled(True)
-        if self.depthLevel != 0:
-            self.backbtn.setDisabled(False)
+        self.backbtn.setDisabled(self.backMovable)
 
-        for branch in self.CurrentBranches:
-            branch.branchsignal.connect(self.moveForward)
-            branch.buttonsignal.connect(self.info)
-            self.layout.addWidget(branch)
-            branch.show()
-
+        self.CurrentBranches.addToLayout()
+        self.layout.addWidget(self.CurrentBranches)
+        self.CurrentBranches.connectBranchsignal(self.moveForward)
+        self.CurrentBranches.connectButtonsignal(self.info)
 
     def info(self, arg):
         itm = Item()
@@ -51,30 +44,26 @@ class TreeButton(QWidget):
         self.choiced.emit(itm)
 
     def moveBack(self):
-        self.depthLevel -= 1
         self.refreshLayout()
-        if len(self.prevBranches) == 0:
+        if self.prevBranch is None:
             self.CurrentBranches = self.Tree
-            self.prevBranches = self.Tree
-            self.depthLevel = 0
+            self.prevBranch = self.Tree
+            self.backMovable = False
         else:
-            self.CurrentBranches = self.prevBranches[0].Branches
-            self.prevBranches = self.prevBranches[0].prevBranches
+            self.CurrentBranches = self.prevBranch[0].Branches
+            self.prevBranch = self.prevBranch[0].prevBranch
 
         self.viewBranchesAfterBack()
 
 
     def moveForward(self, arg):
-        self.depthLevel +=1
-        self.prevBranches = arg["prevBranches"]
-        #if self.depthLevel == 1:
-            #self.prevBranches = self.Tree
-
+        self.backMovable = True
         self.refreshLayout()
+        self.prevBranch = arg["prevBranch"]
         self.CurrentBranches = arg["Branches"]
         self.viewBranches()
 
     def refreshLayout(self):
-        for w in self.CurrentBranches:
-            self.layout.removeWidget(w)
-            w.hide()
+        self.CurrentBranches.removeFromLayout()
+        self.layout.removeWidget(self.CurrentBranches)
+
