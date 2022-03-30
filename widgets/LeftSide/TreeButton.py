@@ -23,19 +23,15 @@ class TreeButton(QWidget):
 
         self.viewBranches()
 
-    def viewBranchesAfterBack(self):
-        self.backbtn.setDisabled(self.backMovable)
-
-        self.CurrentBranches.addToLayout()
-        self.layout.addWidget(self.CurrentBranches)
 
     def viewBranches(self):
-        self.backbtn.setDisabled(self.backMovable)
-
-        self.CurrentBranches.addToLayout()
-        self.layout.addWidget(self.CurrentBranches)
-        self.CurrentBranches.connectBranchsignal(self.moveForward)
-        self.CurrentBranches.connectButtonsignal(self.info)
+        self.backbtn.setDisabled(not self.backMovable)
+        if self.CurrentBranches is not None:
+            self.CurrentBranches.addToLayout()
+            self.layout.addWidget(self.CurrentBranches)
+            self.CurrentBranches.connectBranchsignal(self.moveForward)
+            self.CurrentBranches.connectButtonsignal(self.info)
+            self.CurrentBranches.show()
 
     def info(self, arg):
         itm = Item()
@@ -50,10 +46,10 @@ class TreeButton(QWidget):
             self.prevBranch = self.Tree
             self.backMovable = False
         else:
-            self.CurrentBranches = self.prevBranch[0].Branches
-            self.prevBranch = self.prevBranch[0].prevBranch
+            self.CurrentBranches = self.prevBranch.Branches
+            self.prevBranch = self.prevBranch.prevBranch
 
-        self.viewBranchesAfterBack()
+        self.viewBranches()
 
 
     def moveForward(self, arg):
@@ -64,6 +60,10 @@ class TreeButton(QWidget):
         self.viewBranches()
 
     def refreshLayout(self):
-        self.CurrentBranches.removeFromLayout()
-        self.layout.removeWidget(self.CurrentBranches)
+        if self.CurrentBranches is not None:
+            self.CurrentBranches.disconnectBranchsignal(self.moveForward)
+            self.CurrentBranches.disconnectButtonsignal(self.info)
+            self.CurrentBranches.removeFromLayout()
+            self.layout.removeWidget(self.CurrentBranches)
+            self.CurrentBranches.hide()
 

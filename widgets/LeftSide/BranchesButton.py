@@ -1,6 +1,4 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
-from PyQt5.QtCore import pyqtSignal
-from widgets.LeftSide.DataButton import DataButton
 
 
 class BranchesButton(QWidget):
@@ -9,15 +7,29 @@ class BranchesButton(QWidget):
 
         self.layout = QVBoxLayout(self)
         self.Branches = branches
-        self._addToLayout()
+        self.addToLayout()
 
     def connectBranchsignal(self, function):
         for branch in self.Branches:
-            branch.branchsignal.connect(function)
+            branch.branchsignal.choiced.connect(function)
 
     def connectButtonsignal(self, function):
         for branch in self.Branches:
-            branch.buttonsignal.connect(function)
+            branch.buttonsignal.choiced.connect(function)
+
+    def disconnectBranchsignal(self, function):
+        try:
+            for branch in self.Branches:
+                branch.branchsignal.choiced.disconnect(function)
+        except:
+            pass
+
+    def disconnectButtonsignal(self, function):
+        try:
+            for branch in self.Branches:
+                branch.buttonsignal.choiced.disconnect(function)
+        except:
+            pass
 
     def addToLayout(self):
         for branch in self.Branches:
