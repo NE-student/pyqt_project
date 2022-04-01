@@ -15,6 +15,7 @@ class BranchButton(QWidget):
         self.layout = QVBoxLayout(self)
         self.Button = DataButton(name, data)
         self.layout.addWidget(self.Button)
+        self.layout.addSpacing(5)
         self.layout.setAlignment(self.Button, Qt.AlignCenter)
         self.Branches = branches
         self.prevBranch = prevbranch

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QGridLayout
 
 
 class BranchesButton(QWidget):
-    def __init__(self, branches=[], gridwith = 2):
+    def __init__(self, branches=[], gridwith = 1):
         super().__init__()
         self.layout = QGridLayout(self)
         self.layout.setSpacing(25)
