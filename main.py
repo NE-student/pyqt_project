@@ -23,7 +23,7 @@ class App(QMainWindow):
         self.centerWidget = QWidget()
         self.centerWidget.setLayout(self.layout)
         self.setCentralWidget(self.centerWidget)
-        self.setGeometry(40, 40, 300, 450)
+        self.setGeometry(40, 40, 500, 450)
 
     def viewDescription(self, arg):
         self.layout.removeWidget(self.description)
@@ -33,7 +33,16 @@ class App(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    game = BranchesButton([BranchButton("Grounded", "Grounded"), BranchButton("Rocket league", "aga")])
+    game = BranchesButton([
+        BranchButton("Grounded", "Grounded"),
+        BranchButton("Rocket league", "aga"),
+        BranchButton("Warframe", "yea"),
+        BranchButton("Warface", "uh"),
+        BranchButton("Magicka", "wow"),
+        BranchButton("Dark souls", "1k deathes = 1Qn souls"),
+        BranchButton("Demon's souls", "The same thing as the dark souls"),
+        BranchButton("Contra", "piu-piu"),
+    ], 2)
     children = BranchesButton([BranchButton("Weapons", "Weapons"), BranchButton("Npcs", "Npcs")])
     childrenchildren = BranchesButton([BranchButton("For far", "For far"), BranchButton("For near", "For near")])
     game.setBranchesAt(0, children)

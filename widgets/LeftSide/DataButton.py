@@ -1,11 +1,12 @@
-from PyQt5.QtWidgets import QPushButton
+from widgets.animation.Button import AnimCategoryButton
 
 
-class DataButton(QPushButton):
+class DataButton(AnimCategoryButton):
     def __init__(self, text, data, parent=None):
         super().__init__(text=text, parent=parent)
 
         self._data = data
+
 
     @property
     def Data(self):

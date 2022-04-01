@@ -1,11 +1,12 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QGridLayout
 
 
 class BranchesButton(QWidget):
-    def __init__(self, branches=[]):
+    def __init__(self, branches=[], gridwith = 2):
         super().__init__()
-
-        self.layout = QVBoxLayout(self)
+        self.layout = QGridLayout(self)
+        self.layout.setSpacing(25)
+        self.gridwidth = gridwith
         self.Branches = branches
         self.addToLayout()
 
@@ -32,9 +33,15 @@ class BranchesButton(QWidget):
             pass
 
     def addToLayout(self):
+        i = 0
+        j = 0
         for branch in self.Branches:
-            self.layout.addWidget(branch)
+            if j == self.gridwidth:
+                i +=1
+                j = 0
+            self.layout.addWidget(branch, i, j)
             branch.show()
+            j+=1
 
     def removeFromLayout(self):
         for branch in self.Branches:

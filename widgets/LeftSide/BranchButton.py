@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
-from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSignal, QObject, Qt
 from widgets.LeftSide.DataButton import DataButton
 from widgets.LeftSide.BranchesButton import BranchesButton
 
@@ -15,6 +15,7 @@ class BranchButton(QWidget):
         self.layout = QVBoxLayout(self)
         self.Button = DataButton(name, data)
         self.layout.addWidget(self.Button)
+        self.layout.setAlignment(self.Button, Qt.AlignCenter)
         self.Branches = branches
         self.prevBranch = prevbranch
         self.Button.clicked.connect(self.choiceBranch)
